@@ -19,7 +19,7 @@ logging.basicConfig(format="%(asctime)s %(message)s", filename="naturebytes_came
 logging.info("Naturebytes Wildlife Cam Kit started up successfully")
 
 # Set the resolution of the video you intend to capture.
-camera = picamera2.PiCamera(resolution=(800, 600))
+camera = picamera2.PiCamera2(resolution=(800, 600))
 
 print("Starting up!")
 sleep_time = 60
@@ -31,7 +31,7 @@ print("Waiting %d seconds" % (sleep_time))
 
 def main(argv):
     # Set default save location
-    save_location = "/media/usb0/"
+    save_location = "/media/pi/"
     # Command line defaults
     verbose = False
 
