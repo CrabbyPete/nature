@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # Naturebytes Wildlife Cam Kit | V1.01
 # Based on the excellent official Raspberry Pi tutorials and a little extra from Naturebytes
-
+import csv
 import time
+import pathlib
 import logging
 import RPi.GPIO as GPIO
 
@@ -18,10 +19,18 @@ logging.basicConfig(format='%(asctime)s %(message)s',level=logging.DEBUG)
 logging.info('Naturebytes Wildlife Cam Kit started up successfully')
 
 # Assigning a variable to the pins that we have connected the PIR to
-SENSOR_PIN = 16
+SENSOR_PIN = 13
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+def what_os():
+    path = pathlib.Path("/etc/os-release")
+    with open(path) as stream:
+        reader = csv.reader(stream, delimiter="=")
+        os_release = dict(reader)
+    return os_release
+
 
 def main():
 
@@ -29,6 +38,11 @@ def main():
     currState = False
 
     # Starting a loop
+    if '12' in what_os()['VERSION_ID']
+        cam_command = 'rpi-still'
+    else:
+        cam_command = 'libcamera-still'
+
     while True:
         time.sleep(0.1)
         prevState = currState
@@ -60,7 +74,7 @@ def main():
                 photo = get_date + '_' +  get_time + '.jpg'
 
                 # Using the raspistill library to take a photo and show that a photo has been taken in a small preview box on the desktop
-                cmd = f'rpicam-still --output {photo}'
+                cmd = f'{cam_command} --output {photo}'
                 print (f"cmd:{cmd}")
 
                 # Log that we have just taking a photo"
