@@ -19,7 +19,7 @@ logging.basicConfig(format="%(asctime)s %(message)s", filename="naturebytes_came
 logging.info("Naturebytes Wildlife Cam Kit started up successfully")
 
 # Set the resolution of the video you intend to capture.
-camera = Picamera2(resolution=(800, 600))
+#camera = Picamera2(resolution=(800, 600))
 
 print("Starting up!")
 sleep_time = 60
