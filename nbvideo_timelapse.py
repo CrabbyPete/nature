@@ -3,13 +3,13 @@
 # Based on the excellent official Raspberry Pi tutorials and a little extra from Naturebytes
 
 import os
-import picamera2
 import time
 import datetime as dt
 import logging
 import sys
 import getopt
 
+rom picamera2 import Picamera2
 # Logging all of the camera's activity to the "naturebytes_camera_log" file. If you want to watch what your 
 # camera is doing step by step you can open a Terminal window and type "cd /Naturebytes/Scripts" and then type 
 # "tail -f naturebytes_camera_log" - leave this Terminal window open and you can view the logs live.
@@ -19,7 +19,7 @@ logging.basicConfig(format="%(asctime)s %(message)s", filename="naturebytes_came
 logging.info("Naturebytes Wildlife Cam Kit started up successfully")
 
 # Set the resolution of the video you intend to capture.
-camera = picamera2.PiCamera2(resolution=(800, 600))
+camera = Picamera2(resolution=(800, 600))
 
 print("Starting up!")
 sleep_time = 60
