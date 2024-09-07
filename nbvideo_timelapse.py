@@ -3,7 +3,7 @@
 # Based on the excellent official Raspberry Pi tutorials and a little extra from Naturebytes
 
 import os
-import picamera
+import picamera2
 import time
 import datetime as dt
 import logging
@@ -19,12 +19,14 @@ logging.basicConfig(format="%(asctime)s %(message)s", filename="naturebytes_came
 logging.info("Naturebytes Wildlife Cam Kit started up successfully")
 
 # Set the resolution of the video you intend to capture.
-camera = picamera.PiCamera(resolution=(800, 600))
+camera = picamera2.PiCamera(resolution=(800, 600))
 
-print( "Starting up!")
+print("Starting up!")
 sleep_time = 60
 time.sleep(sleep_time)
 print("Waiting %d seconds" % (sleep_time))
+
+
 # Change the time.sleep value to delay the startup. The variable is in seconds, so it waits 60 seconds bef$
 
 def main(argv):
@@ -60,15 +62,17 @@ def main(argv):
             filename = os.path.join(save_location, dt.datetime.now().strftime('%Y-%m-%d_%H.%M.%S.h264'))
             logging.info("Taking a video. This is video %d " % (x))
             printVerbose(verbose, msg=("Taking a video. This is video %d" % (x)))
-            
-            camera.start_recording(filename) 
-            camera.wait_recording(record_time) # Record for 5 (record_time) seconds
+
+            camera.start_recording(filename)
+            camera.wait_recording(record_time)  # Record for 5 (record_time) seconds
             camera.stop_recording()
-            logging.info("Video %(video_num)d completed", { "video_num": x })
+            logging.info("Video %(video_num)d completed", {"video_num": x})
             printVerbose(verbose, msg=("Video %d completed" % (x)))
-            
-            logging.info("Sleeping for %(wait_mins)d minutes and %(wait_secs)d seconds before recording again", {"wait_mins": (wait_time/60), "wait_secs": (wait_time%60) })
-            printVerbose(verbose, msg=("Sleeping for %d minutes and %d seconds before recording again" % (wait_time/60, wait_time%60)))
+
+            logging.info("Sleeping for %(wait_mins)d minutes and %(wait_secs)d seconds before recording again",
+                         {"wait_mins": (wait_time / 60), "wait_secs": (wait_time % 60)})
+            printVerbose(verbose, msg=("Sleeping for %d minutes and %d seconds before recording again" % (
+            wait_time / 60, wait_time % 60)))
             time.sleep(wait_time)
             logging.info("Done. Preparing to record next video.")
             printVerbose(verbose, "Done. Preparing to record next video.")
@@ -79,7 +83,8 @@ def main(argv):
     except:
         print("Error detected. Exiting program")
         sys.exit(2)
-    
+
+
 # End of main
 
 def printHelp():
@@ -91,8 +96,10 @@ def printHelp():
             """
     print(options)
 
+
 def printVerbose(verbose, msg):
-    if(verbose): print("Log: " + msg)         
+    if (verbose): print("Log: " + msg)
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
