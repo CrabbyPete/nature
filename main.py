@@ -37,8 +37,10 @@ def main():
     prevState = False
     currState = False
 
-    # Starting a loop
-    if '12' in what_os()['VERSION_ID']
+    # Starting with Bookworm the cammand name changed
+    os_release = what_os()
+    version = os_release.get('VERSION')
+    if '12' in version:
         cam_command = 'rpi-still'
     else:
         cam_command = 'libcamera-still'
