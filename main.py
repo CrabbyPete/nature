@@ -19,9 +19,9 @@ logging.basicConfig(format='%(asctime)s %(message)s',level=logging.DEBUG)
 logging.info('Naturebytes Wildlife Cam Kit started up successfully')
 
 # Assigning a variable to the pins that we have connected the PIR to
-SENSOR_PIN = 13
+SENSOR_PIN = 18
 
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 def what_os():

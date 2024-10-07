@@ -8,7 +8,7 @@ print ('Wave your hand in front of the camera / sensor to trigger your PIR')
 sensor_pin = 18
 
 # Set the GPIO (General Purpose Input Outout) PINs up and define that we want to read "sensorPin" that we assigned above
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
