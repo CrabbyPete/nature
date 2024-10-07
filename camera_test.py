@@ -3,7 +3,7 @@ from libcamera import controls
 
 def main():
     picam2 = Picamera2()
-    #picam2.start(show_preview=False)
+    picam2.start(show_preview=False)
     picam2.set_controls({"AfMode": controls.AfModeEnum.Continuous,
                          "AfSpeed": controls.AfSpeedEnum.Fast})
 
