@@ -5,14 +5,14 @@
 #
 # Usage: sudo python nbcamera_batt.py [<options>] [--]
 # ======================================================================
-
-import RPi.GPIO as GPIO
+import sys
 import time
+import getopt
+import logging
+import RPi.GPIO as GPIO
+
 from subprocess import call
 from datetime import datetime
-import logging
-import getopt
-import sys
 
 # Logging all of the camera's activity to the "naturebytes_camera_log" file. If you want to watch what your camera
 # is doing step by step you can open a Terminal window and type "cd /Naturebytes/Scripts" and then type
