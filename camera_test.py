@@ -7,7 +7,7 @@ def main():
     picam2.set_controls({"AfMode": controls.AfModeEnum.Continuous,
                          "AfSpeed": controls.AfSpeedEnum.Fast})
 
-    picam2.capture_file("./camera-test.jpg")
+    picam2.start_and_capture_file("test.jpg")
 
 if __name__ == "__main__":
     main()
