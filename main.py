@@ -9,7 +9,7 @@ import pathlib
 import logging
 import RPi.GPIO as GPIO
 
-from subprocess import call, Popen
+from subprocess import call, Popen, DETACHED_PROCESS
 
 # Logging all of the camera's activity to the "naturebytes_camera_log" file. If you want to watch what your camera
 # is doing step by step you can open a Terminal window and type "cd /Naturebytes/Scripts" and then type
@@ -68,18 +68,19 @@ def main(use_overlay=False, save_to='./'):
                 photo = arrow.now().format('YYYY-MM-DD_HH:mm:ss')+'.jpg'
 
                 # Using the raspistill library to take a photo and show that a photo has been taken in a small preview box on the desktop
-                cmd = f'{cam_command} --output {photo}'
+                cmd = f'{cam_command} --output ./{photo}'
                 logging.info(f"cmd:{cmd}")
 
                 # Log that we have just taking a photo"
                 logging.info(f'About to take a photo {photo}')
                 #call ([cmd], shell=True)
                 task = Popen(cmd.split(),
-                             shell=True,
+                             shell=False,
                              stdin=None,
                              stdout=None,
                              stderr=None,
-                             close_fds=True)
+                             close_fds=True,
+                             creationflags=DETACHED_PROCESS)
 
                 # Log that a photo was taken successfully and state the file name so we know which one"
                 logging.info('Photo taken successfully %(show_photo_name)s', { 'show_photo_name': photo })
