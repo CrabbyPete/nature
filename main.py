@@ -2,14 +2,13 @@
 # Naturebytes Wildlife Cam Kit | V1.01
 # Based on the excellent official Raspberry Pi tutorials and a little extra from Naturebytes
 import csv
-import os.path
 import time
 import arrow
 import pathlib
 import logging
 import RPi.GPIO as GPIO
 
-from subprocess import call, Popen, DETACHED_PROCESS
+from subprocess import call, Popen
 
 # Logging all of the camera's activity to the "naturebytes_camera_log" file. If you want to watch what your camera
 # is doing step by step you can open a Terminal window and type "cd /Naturebytes/Scripts" and then type
@@ -23,6 +22,7 @@ SENSOR_PIN = 18
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
 
 def what_os():
     path = pathlib.Path("/etc/os-release")
@@ -65,7 +65,8 @@ def main(use_overlay=False, save_to='./'):
                 # logging.info('Battery level is %(get_batt_level)s', { 'get_batt_level': batt_state })
 
                 # Assigning a variable so we can create a photo JPG file that contains the date and time as its name
-                photo = arrow.now().format('YYYY-MM-DD_HH:mm:ss')+'.jpg'
+                now = arrow.now().format('YYYY-MM-DD_HH:mm:ss')
+                photo = now +'.jpg'
 
                 # Using the raspistill library to take a photo and show that a photo has been taken in a small preview box on the desktop
                 cmd = f'{cam_command} --output ./{photo}'
@@ -79,38 +80,37 @@ def main(use_overlay=False, save_to='./'):
                              stdin=None,
                              stdout=None,
                              stderr=None,
-                             close_fds=True,
-                             creationflags=DETACHED_PROCESS)
+                             close_fds=True)
 
                 # Log that a photo was taken successfully and state the file name so we know which one"
-                logging.info('Photo taken successfully %(show_photo_name)s', { 'show_photo_name': photo })
+                logging.info('Photo taken successfully %(show_photo_name)s', {'show_photo_name': photo})
                 photo_location =  save_to + photo
 
                 if use_overlay:
                     # Log that we are about to attempt to write the overlay text"
                     logging.info('About to write the overlay text')
 
-                    overlay = "/usr/bin/convert "+ photo_location + " "
+                    overlay = "/usr/bin/convert " + photo_location + " "
 
                     # Use ImageMagick to write text and meta data onto the photo.
                     # overlay += " -gravity north -background black -extent +0+40 +repage -box black -fill white -pointsize 24 -gravity southwest -annotate +6+6 'Naturebytes Wildlife Cam Kit | Date & Time: " + get_date + '" '" + get_time '" -gravity southeast -annotate +6+6 'Camera 1 " "'" + photo_location
-                    overlay += " -gravity north -background black -extent +0+40 +repage -box black -fill white -pointsize 24 -gravity southwest -annotate +6+6 'Naturebytes Wildlife Cam Kit | Date & Time: " + get_date + " " + get_time + "' -gravity southeast -annotate +6+6 'Camera 1' " + photo_location
+                    overlay += " -gravity north -background black -extent +0+40 +repage -box black -fill white -pointsize 24 -gravity southwest -annotate +6+6 'Naturebytes Wildlife Cam Kit | Date & Time: " + now + "' -gravity southeast -annotate +6+6 'Camera 1' " + photo_location
 
                     # Log that we the text was added successfully"
                     logging.info('Added the overlay text successfully')
-                    call ([overlay], shell=True)
+                    call([overlay], shell=True)
 
                     # Add a small Naturebytes logo to the top left of the photo. Note - you could change this to your own logo if you wanted.
                     logging.info('Adding the Naturebytes logo')
-                    overlay = '/usr/bin/convert '+ photo_location + ' ./naturebytes_logo_80.png -geometry +1+1 -composite ' + photo_location
-                    call ([overlay], shell=True)
+                    overlay = '/usr/bin/convert ' + photo_location + ' ./naturebytes_logo_80.png -geometry +1+1 -composite ' + photo_location
+                    call([overlay], shell=True)
 
-                    # Log that the logo was added succesfully"
+                    # Log that the logo was added successfully"
                     logging.info('Logo added successfully')
             else:
                 # print "Waiting for a new PIR trigger to continue"
                 logging.info('Waiting for a new PIR trigger to continue')
 
+
 if __name__ == "__main__":
     main()
-
