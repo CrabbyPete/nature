@@ -120,7 +120,7 @@ def main(use_overlay=False, save_to='./'):
 
 
 if __name__ == "__main__":
-    save_to = './'
+    save_to = './photos'
     use_overlay = True
     if len(sys.argv)>1:
         save_to = sys.argv[1]
