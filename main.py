@@ -1,11 +1,14 @@
 #!/usr/bin/python
 # Naturebytes Wildlife Cam Kit | V1.01
 # Based on the excellent official Raspberry Pi tutorials and a little extra from Naturebytes
+import sys
 import csv
 import time
 import arrow
 import pathlib
 import logging
+import argparse
+
 import RPi.GPIO as GPIO
 
 from subprocess import call
@@ -19,9 +22,10 @@ logging.basicConfig(format='%(asctime)s %(message)s',level=logging.DEBUG)
 logging.info('Naturebytes Wildlife Cam Kit started up successfully')
 
 # Assigning a variable to the pins that we have connected the PIR to
-SENSOR_PIN = 18
+SENSOR_PIN = 13
+BATTERY_PIN = 15
 
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 GPIO.setup(SENSOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
@@ -116,4 +120,13 @@ def main(use_overlay=False, save_to='./'):
 
 
 if __name__ == "__main__":
-    main(use_overlay=True)
+    save_to = './'
+    use_overlay = True
+    if len(sys.argv)>1:
+        save_to = sys.argv[1]
+    try:
+        use_overlay = False if sys.argv[2] == 'false' else True
+    except IndexError:
+        pass
+
+    main(save_to, use_overlay)
