@@ -41,6 +41,7 @@ def take_photo(command, save_to, use_overlay):
     """
     Take a photo and if necessary add overlay
     :param command: str: command string to send
+    :param save_to: str: path of directory to save photos
     :param use_overlay: bool: use an overlay or not
     :return: None
     """
@@ -50,7 +51,7 @@ def take_photo(command, save_to, use_overlay):
 
     # Assigning a variable so we can create a photo JPG file that contains the date and time as its name
     now = arrow.now().format('YYYY-MM-DD_HH:mm:ss')
-    photo = now +'.jpg'
+    photo = save_to+now +'.jpg'
 
     # Using the raspistill library to take a photo and show that a photo has been taken in a small preview box on the desktop
     cmd = f'{command} --output ./{photo}'
@@ -63,7 +64,7 @@ def take_photo(command, save_to, use_overlay):
 
     # Log that a photo was taken successfully and state the file name so we know which one"
     logging.info('Photo taken successfully %(show_photo_name)s', {'show_photo_name': photo})
-    photo_location =  save_to + photo
+    photo_location =  photo
 
     if use_overlay:
         # Log that we are about to attempt to write the overlay text"
@@ -87,8 +88,14 @@ def take_photo(command, save_to, use_overlay):
         # Log that the logo was added successfully"
         logging.info('Logo added successfully')
 
-def main(use_overlay=False, save_to='./'):
-    prev_state = curr_state = 0
+def main(save_to, use_overlay=False):
+    """
+    Main function
+    :param save_to: directory to save photos
+    :param use_overlay: whether to add a logo
+    :return: never
+    """
+    curr_state = 0
 
     # Starting with Bookworm the cammand name changed
     os_release = what_os()
@@ -120,8 +127,8 @@ def main(use_overlay=False, save_to='./'):
 
 
 if __name__ == "__main__":
-    save_to = './photos'
-    use_overlay = True
+    save_to = '/tmp/photos/'
+    use_overlay = False
     if len(sys.argv)>1:
         save_to = sys.argv[1]
     try:
