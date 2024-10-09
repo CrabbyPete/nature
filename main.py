@@ -51,10 +51,10 @@ def take_photo(command, save_to, use_overlay):
 
     # Assigning a variable so we can create a photo JPG file that contains the date and time as its name
     now = arrow.now().format('YYYY-MM-DD_HH:mm:ss')
-    photo = save_to+now +'.jpg'
+    photo = save_to + now +'.jpg'
 
     # Using the raspistill library to take a photo and show that a photo has been taken in a small preview box on the desktop
-    cmd = f'{command} --output ./{photo}'
+    cmd = f'{command} --output {photo}'
     logging.info(f"cmd:{cmd}")
 
     # Log that we have just taking a photo"
